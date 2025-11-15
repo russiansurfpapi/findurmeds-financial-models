@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindUrMeds Revenue Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .inputs-section {
+            padding: 40px;
+            background: #f8f9fa;
+            border-right: 1px solid #e0e0e0;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .results-section {
+            padding: 40px;
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .input-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-group .hint {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        .result-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .result-card h3 {
+            font-size: 16px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+
+        .result-card .value {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .result-card .subvalue {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .breakdown-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .breakdown-card h4 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .breakdown-item:last-child {
+            border-bottom: none;
+            font-weight: 700;
+            color: #667eea;
+            padding-top: 12px;
+            margin-top: 5px;
+            border-top: 2px solid #667eea;
+        }
+
+        .breakdown-item span:first-child {
+            color: #666;
+        }
+
+        .breakdown-item span:last-child {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .category-section {
+            margin-bottom: 30px;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .market-share {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        .market-share h3 {
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            background: rgba(255,255,255,0.3);
+            height: 30px;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            background: white;
+            height: 100%;
+            border-radius: 15px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #11998e;
+            font-size: 14px;
+        }
+
+        @media (max-width: 1024px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .inputs-section {
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💊 FindUrMeds Revenue Calculator</h1>
+            <p>Interactive model to project revenue based on your key assumptions</p>
+        </div>
+
+        <div class="content">
+            <!-- LEFT SIDE: INPUTS -->
+            <div class="inputs-section">
+                <!-- ECONOMICS -->
+                <div class="category-section">
+                    <h2 class="section-title">📊 Economics</h2>
+
+                    <div class="input-group">
+                        <label>Price per Search ($)</label>
+                        <input type="number" id="pricePerSearch" value="30" step="1">
+                        <div class="hint">How much you charge per medication search</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Minutes of Calling per Search</label>
+                        <input type="number" id="minutesPerSearch" value="60" step="5">
+                        <div class="hint">Average time AI spends calling pharmacies</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Eleven Labs Cost per Hour ($)</label>
+                        <input type="number" id="elevenCostPerHour" value="8" step="0.5">
+                        <div class="hint">Conversational AI: ~667 credits/min = ~$8/hr at scale</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Other Costs per Search ($)</label>
+                        <input type="number" id="otherCosts" value="1" step="0.25">
+                        <div class="hint">Infrastructure, Maps API, etc.</div>
+                    </div>
+                </div>
+
+                <!-- PATIENT BEHAVIOR -->
+                <div class="category-section">
+                    <h2 class="section-title">👥 Patient Behavior</h2>
+
+                    <div class="input-group">
+                        <label>Searches per Patient per Year</label>
+                        <input type="number" id="searchesPerYear" value="12" step="1">
+                        <div class="hint">How often each patient needs medication search</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Patient Retention Rate (%)</label>
+                        <input type="number" id="retentionRate" value="70" step="5" min="0" max="100">
+                        <div class="hint">% of patients who return after first search</div>
+                    </div>
+                </div>
+
+                <!-- DOCTORS -->
+                <div class="category-section">
+                    <h2 class="section-title">🩺 Doctors</h2>
+
+                    <div class="input-group">
+                        <label>Number of Doctor Partners</label>
+                        <input type="number" id="numDoctors" value="20" step="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Average Patients per Doctor</label>
+                        <input type="number" id="patientsPerDoctor" value="80" step="10">
+                        <div class="hint">Total active patient panel</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>% of Patients with Shortages</label>
+                        <input type="number" id="shortageRate" value="15" step="1" min="0" max="100">
+                        <div class="hint">% who experience medication shortages yearly</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Doctor Referral Rate (%)</label>
+                        <input type="number" id="doctorReferralRate" value="50" step="5" min="0" max="100">
+                        <div class="hint">% of shortage patients doctor actually refers</div>
+                    </div>
+                </div>
+
+                <!-- INFLUENCERS -->
+                <div class="category-section">
+                    <h2 class="section-title">📱 Influencers</h2>
+
+                    <div class="input-group">
+                        <label>Number of Influencers</label>
+                        <input type="number" id="numInfluencers" value="3" step="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Avg Followers per Influencer</label>
+                        <input type="number" id="followersPerInfluencer" value="150000" step="10000">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Posts per Month</label>
+                        <input type="number" id="postsPerMonth" value="2" step="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Conversion Rate (%)</label>
+                        <input type="number" id="influencerConversion" value="0.015" step="0.001" min="0" max="1">
+                        <div class="hint">% of followers who convert per post (150K followers × 0.015% = 22 customers/post)</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Commission Rate (%)</label>
+                        <input type="number" id="commissionRate" value="28" step="1" min="0" max="100">
+                    </div>
+                </div>
+
+                <!-- COACHES/THERAPISTS -->
+                <div class="category-section">
+                    <h2 class="section-title">🧠 Coaches & Therapists</h2>
+
+                    <div class="input-group">
+                        <label>Number of Coaches/Therapists</label>
+                        <input type="number" id="numCoaches" value="5" step="1">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Active Clients per Coach</label>
+                        <input type="number" id="clientsPerCoach" value="30" step="5">
+                    </div>
+
+                    <div class="input-group">
+                        <label>% Clients on ADHD Meds</label>
+                        <input type="number" id="coachMedRate" value="60" step="5" min="0" max="100">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Coach Referral Rate (%)</label>
+                        <input type="number" id="coachReferralRate" value="30" step="5" min="0" max="100">
+                    </div>
+                </div>
+
+                <!-- MARKET SHARE -->
+                <div class="category-section">
+                    <h2 class="section-title">🎯 Market Context</h2>
+
+                    <div class="input-group">
+                        <label>MedFinder Searches (14 months)</label>
+                        <input type="number" id="medfinderSearches" value="16000" step="1000" readonly>
+                        <div class="hint">Your competitor's traction</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>MedFinder Monthly Searches</label>
+                        <input type="number" id="medfinderMonthly" value="1143" step="100" readonly>
+                        <div class="hint">Calculated: 16000 / 14 months</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT SIDE: RESULTS -->
+            <div class="results-section">
+                <h2 class="section-title">💰 Revenue Projections</h2>
+
+                <div class="result-card">
+                    <h3>Annual Revenue</h3>
+                    <div class="value" id="annualRevenue">$0</div>
+                    <div class="subvalue" id="monthlyRevenue">$0/month</div>
+                </div>
+
+                <div class="result-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+                    <h3>Annual Profit</h3>
+                    <div class="value" id="annualProfit">$0</div>
+                    <div class="subvalue" id="profitMargin">0% margin</div>
+                </div>
+
+                <div id="goalStatus"></div>
+
+                <div class="market-share">
+                    <h3>📈 Market Share vs MedFinder</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="marketShareBar">0%</div>
+                    </div>
+                    <div style="font-size: 14px; opacity: 0.9;" id="marketShareText"></div>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 30px;">📋 Channel Breakdown</h2>
+
+                <div class="breakdown-card">
+                    <h4>🩺 Doctor Channel</h4>
+                    <div class="breakdown-item">
+                        <span>Patients referred/year</span>
+                        <span id="doctorPatients">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Total searches/year</span>
+                        <span id="doctorSearches">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Annual revenue</span>
+                        <span id="doctorRevenue">$0</span>
+                    </div>
+                </div>
+
+                <div class="breakdown-card">
+                    <h4>📱 Influencer Channel</h4>
+                    <div class="breakdown-item">
+                        <span>New patients/year</span>
+                        <span id="influencerPatients">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Total searches/year</span>
+                        <span id="influencerSearches">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Gross revenue</span>
+                        <span id="influencerGross">$0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Commission paid</span>
+                        <span id="influencerCommission">$0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Net revenue</span>
+                        <span id="influencerRevenue">$0</span>
+                    </div>
+                </div>
+
+                <div class="breakdown-card">
+                    <h4>🧠 Coach/Therapist Channel</h4>
+                    <div class="breakdown-item">
+                        <span>Patients referred/year</span>
+                        <span id="coachPatients">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Total searches/year</span>
+                        <span id="coachSearches">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Annual revenue</span>
+                        <span id="coachRevenue">$0</span>
+                    </div>
+                </div>
+
+                <h2 class="section-title" style="margin-top: 30px;">🔢 Unit Economics</h2>
+
+                <div class="breakdown-card">
+                    <h4>Per Search Economics</h4>
+                    <div class="breakdown-item">
+                        <span>Revenue per search</span>
+                        <span id="revenuePerSearch">$0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Eleven Labs cost</span>
+                        <span id="elevenCost">$0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Other costs</span>
+                        <span id="otherCostDisplay">$0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Gross profit/search</span>
+                        <span id="profitPerSearch">$0</span>
+                    </div>
+                </div>
+
+                <div class="breakdown-card">
+                    <h4>Total Volume</h4>
+                    <div class="breakdown-item">
+                        <span>Total searches/year</span>
+                        <span id="totalSearches">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Total searches/month</span>
+                        <span id="monthlySearches">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Total unique patients</span>
+                        <span id="totalPatients">0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get all inputs
+        const inputs = {
+            pricePerSearch: document.getElementById('pricePerSearch'),
+            minutesPerSearch: document.getElementById('minutesPerSearch'),
+            elevenCostPerHour: document.getElementById('elevenCostPerHour'),
+            otherCosts: document.getElementById('otherCosts'),
+            searchesPerYear: document.getElementById('searchesPerYear'),
+            retentionRate: document.getElementById('retentionRate'),
+            numDoctors: document.getElementById('numDoctors'),
+            patientsPerDoctor: document.getElementById('patientsPerDoctor'),
+            shortageRate: document.getElementById('shortageRate'),
+            doctorReferralRate: document.getElementById('doctorReferralRate'),
+            numInfluencers: document.getElementById('numInfluencers'),
+            followersPerInfluencer: document.getElementById('followersPerInfluencer'),
+            postsPerMonth: document.getElementById('postsPerMonth'),
+            influencerConversion: document.getElementById('influencerConversion'),
+            commissionRate: document.getElementById('commissionRate'),
+            numCoaches: document.getElementById('numCoaches'),
+            clientsPerCoach: document.getElementById('clientsPerCoach'),
+            coachMedRate: document.getElementById('coachMedRate'),
+            coachReferralRate: document.getElementById('coachReferralRate'),
+            medfinderSearches: document.getElementById('medfinderSearches')
+        };
+
+        function calculate() {
+            // Get values
+            const pricePerSearch = parseFloat(inputs.pricePerSearch.value);
+            const minutesPerSearch = parseFloat(inputs.minutesPerSearch.value);
+            const elevenCostPerHour = parseFloat(inputs.elevenCostPerHour.value);
+            const otherCosts = parseFloat(inputs.otherCosts.value);
+            const searchesPerYear = parseFloat(inputs.searchesPerYear.value);
+            const retentionRate = parseFloat(inputs.retentionRate.value) / 100;
+
+            // Doctor calculations
+            const numDoctors = parseFloat(inputs.numDoctors.value);
+            const patientsPerDoctor = parseFloat(inputs.patientsPerDoctor.value);
+            const shortageRate = parseFloat(inputs.shortageRate.value) / 100;
+            const doctorReferralRate = parseFloat(inputs.doctorReferralRate.value) / 100;
+
+            const patientsWithShortages = patientsPerDoctor * shortageRate;
+            const referredByDoctor = patientsWithShortages * doctorReferralRate;
+            const doctorPatientsPerYear = numDoctors * referredByDoctor;
+            const doctorSearchesPerYear = doctorPatientsPerYear * searchesPerYear;
+            const doctorRevenue = doctorSearchesPerYear * pricePerSearch;
+
+            // Influencer calculations
+            const numInfluencers = parseFloat(inputs.numInfluencers.value);
+            const followersPerInfluencer = parseFloat(inputs.followersPerInfluencer.value);
+            const postsPerMonth = parseFloat(inputs.postsPerMonth.value);
+            const influencerConversion = parseFloat(inputs.influencerConversion.value) / 100;
+            const commissionRate = parseFloat(inputs.commissionRate.value) / 100;
+
+            const newPatientsPerInfluencerPerMonth = followersPerInfluencer * influencerConversion * postsPerMonth;
+            const influencerPatientsPerYear = numInfluencers * newPatientsPerInfluencerPerMonth * 12;
+            const influencerSearchesPerYear = influencerPatientsPerYear * searchesPerYear * retentionRate;
+            const influencerGrossRevenue = influencerSearchesPerYear * pricePerSearch;
+            const influencerCommission = influencerGrossRevenue * commissionRate;
+            const influencerNetRevenue = influencerGrossRevenue - influencerCommission;
+
+            // Coach/Therapist calculations
+            const numCoaches = parseFloat(inputs.numCoaches.value);
+            const clientsPerCoach = parseFloat(inputs.clientsPerCoach.value);
+            const coachMedRate = parseFloat(inputs.coachMedRate.value) / 100;
+            const coachReferralRate = parseFloat(inputs.coachReferralRate.value) / 100;
+
+            const clientsOnMeds = clientsPerCoach * coachMedRate;
+            const referredByCoach = clientsOnMeds * coachReferralRate;
+            const coachPatientsPerYear = numCoaches * referredByCoach;
+            const coachSearchesPerYear = coachPatientsPerYear * searchesPerYear;
+            const coachRevenue = coachSearchesPerYear * pricePerSearch;
+
+            // Total calculations
+            const totalSearchesPerYear = doctorSearchesPerYear + influencerSearchesPerYear + coachSearchesPerYear;
+            const totalRevenue = doctorRevenue + influencerNetRevenue + coachRevenue;
+            const totalPatients = doctorPatientsPerYear + influencerPatientsPerYear + coachPatientsPerYear;
+
+            // Cost calculations
+            const elevenCostPerSearch = (minutesPerSearch / 60) * elevenCostPerHour;
+            const totalCostPerSearch = elevenCostPerSearch + otherCosts;
+            const profitPerSearch = pricePerSearch - totalCostPerSearch;
+            const totalCosts = totalSearchesPerYear * totalCostPerSearch;
+            const totalProfit = totalRevenue - totalCosts;
+            const profitMargin = (totalProfit / totalRevenue) * 100;
+
+            // Market share vs MedFinder
+            const medfinderSearches = parseFloat(inputs.medfinderSearches.value);
+            const medfinderMonthly = medfinderSearches / 14;
+            document.getElementById('medfinderMonthly').value = Math.round(medfinderMonthly);
+
+            const yourMonthlySearches = totalSearchesPerYear / 12;
+            const marketShare = (yourMonthlySearches / medfinderMonthly) * 100;
+
+            // Update displays
+            document.getElementById('annualRevenue').textContent = '$' + Math.round(totalRevenue).toLocaleString();
+            document.getElementById('monthlyRevenue').textContent = '$' + Math.round(totalRevenue / 12).toLocaleString() + '/month';
+
+            document.getElementById('annualProfit').textContent = '$' + Math.round(totalProfit).toLocaleString();
+            document.getElementById('profitMargin').textContent = profitMargin.toFixed(1) + '% margin';
+
+            // Goal status
+            const goalDiv = document.getElementById('goalStatus');
+            if (totalRevenue >= 120000) {
+                goalDiv.innerHTML = '<div class="success">✅ <strong>Goal achieved!</strong> You\'re hitting your $120K lifestyle target.</div>';
+            } else {
+                const gap = 120000 - totalRevenue;
+                const gapPercent = ((totalRevenue / 120000) * 100).toFixed(0);
+                goalDiv.innerHTML = '<div class="warning">⚠️ <strong>' + gapPercent + '% of goal.</strong> Need $' + Math.round(gap).toLocaleString() + ' more to hit $120K.</div>';
+            }
+
+            // Market share
+            const marketShareBar = document.getElementById('marketShareBar');
+            const marketShareText = document.getElementById('marketShareText');
+            const displayShare = Math.min(marketShare, 100);
+            marketShareBar.style.width = displayShare + '%';
+            marketShareBar.textContent = marketShare.toFixed(1) + '%';
+
+            if (marketShare > 100) {
+                marketShareText.textContent = 'You\'re doing ' + Math.round(yourMonthlySearches).toLocaleString() + ' searches/mo vs MedFinder\'s ' + Math.round(medfinderMonthly).toLocaleString() + '/mo';
+            } else {
+                marketShareText.textContent = 'You: ' + Math.round(yourMonthlySearches).toLocaleString() + ' searches/mo | MedFinder: ' + Math.round(medfinderMonthly).toLocaleString() + ' searches/mo';
+            }
+
+            // Doctor breakdown
+            document.getElementById('doctorPatients').textContent = Math.round(doctorPatientsPerYear).toLocaleString();
+            document.getElementById('doctorSearches').textContent = Math.round(doctorSearchesPerYear).toLocaleString();
+            document.getElementById('doctorRevenue').textContent = '$' + Math.round(doctorRevenue).toLocaleString();
+
+            // Influencer breakdown
+            document.getElementById('influencerPatients').textContent = Math.round(influencerPatientsPerYear).toLocaleString();
+            document.getElementById('influencerSearches').textContent = Math.round(influencerSearchesPerYear).toLocaleString();
+            document.getElementById('influencerGross').textContent = '$' + Math.round(influencerGrossRevenue).toLocaleString();
+            document.getElementById('influencerCommission').textContent = '$' + Math.round(influencerCommission).toLocaleString();
+            document.getElementById('influencerRevenue').textContent = '$' + Math.round(influencerNetRevenue).toLocaleString();
+
+            // Coach breakdown
+            document.getElementById('coachPatients').textContent = Math.round(coachPatientsPerYear).toLocaleString();
+            document.getElementById('coachSearches').textContent = Math.round(coachSearchesPerYear).toLocaleString();
+            document.getElementById('coachRevenue').textContent = '$' + Math.round(coachRevenue).toLocaleString();
+
+            // Unit economics
+            document.getElementById('revenuePerSearch').textContent = '$' + pricePerSearch.toFixed(2);
+            document.getElementById('elevenCost').textContent = '$' + elevenCostPerSearch.toFixed(2);
+            document.getElementById('otherCostDisplay').textContent = '$' + otherCosts.toFixed(2);
+            document.getElementById('profitPerSearch').textContent = '$' + profitPerSearch.toFixed(2);
+
+            // Volume
+            document.getElementById('totalSearches').textContent = Math.round(totalSearchesPerYear).toLocaleString();
+            document.getElementById('monthlySearches').textContent = Math.round(totalSearchesPerYear / 12).toLocaleString();
+            document.getElementById('totalPatients').textContent = Math.round(totalPatients).toLocaleString();
+        }
+
+        // Add event listeners to all inputs
+        Object.values(inputs).forEach(input => {
+            input.addEventListener('input', calculate);
+        });
+
+        // Initial calculation
+        calculate();
+    </script>
+</body>
+</html>
