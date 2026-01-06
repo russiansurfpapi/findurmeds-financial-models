@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FindUrMeds - Patient Guide - George K Lerner, MD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito Sans', sans-serif;
+            background: white;
+            color: #1a1a1a;
+            line-height: 1.5;
+            padding: 30px 40px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: #648A60;
+            letter-spacing: -0.5px;
+        }
+
+        .intro-text {
+            font-size: 14px;
+            color: #1a1a1a;
+            background: #F0F7EF;
+            padding: 14px;
+            border-radius: 10px;
+            border: 2px solid #648A60;
+            margin-bottom: 18px;
+            line-height: 1.6;
+        }
+
+        .section {
+            margin-bottom: 18px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 800;
+            color: #648A60;
+            margin-bottom: 12px;
+        }
+
+        .steps {
+            counter-reset: step-counter;
+        }
+
+        .step {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 11px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            counter-increment: step-counter;
+            background: #648A60;
+            color: white;
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .step-number::before {
+            content: counter(step-counter);
+        }
+
+        .step-text {
+            font-size: 14px;
+            color: #1a1a1a;
+            line-height: 1.5;
+            padding-top: 2px;
+        }
+
+        .inline-code {
+            background: #648A60;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            font-size: 13px;
+            display: inline-block;
+        }
+
+        .qa-section {
+            background: #E8F5E6;
+            padding: 14px;
+            border-radius: 10px;
+            margin-top: 18px;
+            border: 2px solid #C0CDB8;
+        }
+
+        .qa-item {
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #1a1a1a;
+        }
+
+        .qa-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 2px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 12px;
+        }
+
+        @media print {
+            body {
+                padding: 20px 30px;
+            }
+            .inline-code {
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+            @page {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo"><a href="https://findurmeds.com?utm_source=lerner&utm_medium=pdf&utm_campaign=medical_partner" style="color: #648A60; text-decoration: none;">FindUrMeds</a></div>
+    </div>
+
+    <div class="intro-text">
+        FindUrMeds is a medicine finding tool – we help ADHD patients find where their medicine is available and where it is most affordable by calling your local pharmacies (and know how tedious and difficult finding your meds can be :)). We made FindUrMeds to solve our own problem.
+    </div>
+
+    <div class="section">
+        <div class="section-title">How do I use FindUrMeds?</div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number"></div>
+                <div class="step-text">
+                    <span style="font-style: italic; color: #6b7280;">(Optional)</span> <a href="https://www.loom.com/share/7561aae019e6439cba4e8e178332c172" style="color: #648A60; text-decoration: none; font-weight: 700; border-bottom: 2px solid #648A60;">Watch how it works</a> — 1 min video from Sasha, fellow ADHDer and founder of FindUrMeds
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number"></div>
+                <div class="step-text">
+                    Choose your dosage, brand, and the quantity of your prescription
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number"></div>
+                <div class="step-text">
+                    Tell us your zip-code, and some details we use to confirm your prescription with the pharmacy (birthday, full name, phone-number, and zip)
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number"></div>
+                <div class="step-text">
+                    We find your medicine and email you / your provider with where you should fill your prescription
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number"></div>
+                <div class="step-text">
+                    Pick up your medicine at the pharmacy we found for you
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number"></div>
+                <div class="step-text">
+                    Use code <span class="inline-code">LERNER</span> for 100% off
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="qa-section">
+        <div class="section-title" style="margin-bottom: 12px; font-size: 16px;">Good to know:</div>
+        <div class="qa-item">• You don't need insurance</div>
+        <div class="qa-item">• We'll give you a full refund if we can't find your medicine</div>
+        <div class="qa-item">• We don't supply the medicine — your provider and pharmacy handle that. We just help you find it!</div>
+    </div>
+
+    <div class="footer">
+        Visit <strong><a href="https://findurmeds.com?utm_source=lerner&utm_medium=pdf&utm_campaign=medical_partner" style="color: #648A60; text-decoration: none; border-bottom: 2px solid #648A60;">FindUrMeds</a></strong> to get started today<br>
+        Questions? Email <a href="mailto:sasha@findurmeds.com" style="color: #648A60; text-decoration: none; border-bottom: 2px solid #648A60;">sasha@findurmeds.com</a>
+    </div>
+</body>
+</html>

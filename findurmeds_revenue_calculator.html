@@ -301,31 +301,75 @@
                     </div>
                 </div>
 
-                <!-- DOCTORS -->
+                <!-- PROVIDERS (NEW MODEL) -->
                 <div class="category-section">
-                    <h2 class="section-title">🩺 Doctors</h2>
+                    <h2 class="section-title">🏥 Provider Partnerships</h2>
 
                     <div class="input-group">
-                        <label>Number of Doctor Partners</label>
-                        <input type="number" id="numDoctors" value="20" step="1">
+                        <label>Providers You're Talking To</label>
+                        <input type="number" id="providersInPipeline" value="5" step="1">
+                        <div class="hint">How many providers are you currently in conversations with?</div>
                     </div>
 
                     <div class="input-group">
-                        <label>Average Patients per Doctor</label>
-                        <input type="number" id="patientsPerDoctor" value="80" step="10">
-                        <div class="hint">Total active patient panel</div>
+                        <label>Provider Conversion Rate (%)</label>
+                        <input type="number" id="providerConversionRate" value="50" step="5" min="0" max="100">
+                        <div class="hint">What % of providers you talk to will actually use your service?</div>
                     </div>
 
                     <div class="input-group">
-                        <label>% of Patients with Shortages</label>
-                        <input type="number" id="shortageRate" value="15" step="1" min="0" max="100">
-                        <div class="hint">% who experience medication shortages yearly</div>
+                        <label>Average Patients per Provider</label>
+                        <input type="number" id="patientsPerProvider" value="200" step="25">
+                        <div class="hint">Total active patient panel per provider</div>
                     </div>
 
                     <div class="input-group">
-                        <label>Doctor Referral Rate (%)</label>
-                        <input type="number" id="doctorReferralRate" value="50" step="5" min="0" max="100">
-                        <div class="hint">% of shortage patients doctor actually refers</div>
+                        <label>% Patients Needing Medicine Search</label>
+                        <input type="number" id="patientsNeedingSearch" value="10" step="1" min="0" max="100">
+                        <div class="hint">What % of patients actually need help finding their medicine?</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Free Searches per Provider</label>
+                        <input type="number" id="freeSearches" value="5" step="1">
+                        <div class="hint">First N searches are on the house</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Months to Full Ramp-Up</label>
+                        <input type="number" id="rampUpMonths" value="2" step="0.5" min="0.5" max="12">
+                        <div class="hint">How long until provider is referring at full volume?</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Referrals per Provider (after ramp)</label>
+                        <input type="number" id="referralsPerProvider" value="1" step="0.5" min="0" max="10">
+                        <div class="hint">After 1-2 months, each provider will refer you to N other providers</div>
+                    </div>
+                </div>
+
+                <!-- WHITE LABEL TOGGLE -->
+                <div class="category-section">
+                    <h2 class="section-title">⚙️ Service Model</h2>
+
+                    <div class="input-group">
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="useWhiteLabel" style="width: auto; margin: 0;">
+                            <span>Use White-Label Service (temporarily)</span>
+                        </label>
+                        <div class="hint">If checked, you'll use another service while building AI, reducing markup to $7</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>Full Service Price ($)</label>
+                        <input type="number" id="fullServicePrice" value="30" step="5">
+                        <div class="hint">Your full price when using your own AI</div>
+                    </div>
+
+                    <div class="input-group">
+                        <label>White-Label Markup ($)</label>
+                        <input type="number" id="whiteLabelMarkup" value="7" step="1">
+                        <div class="hint">Your markup when white-labeling another service</div>
                     </div>
                 </div>
 
@@ -432,18 +476,46 @@
                 <h2 class="section-title" style="margin-top: 30px;">📋 Channel Breakdown</h2>
 
                 <div class="breakdown-card">
-                    <h4>🩺 Doctor Channel</h4>
+                    <h4>🏥 Provider Channel (Year 1)</h4>
                     <div class="breakdown-item">
-                        <span>Patients referred/year</span>
-                        <span id="doctorPatients">0</span>
+                        <span>Active providers (end of year)</span>
+                        <span id="activeProviders">0</span>
                     </div>
                     <div class="breakdown-item">
-                        <span>Total searches/year</span>
-                        <span id="doctorSearches">0</span>
+                        <span>Total patients served</span>
+                        <span id="providerPatients">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Paid searches</span>
+                        <span id="paidSearches">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Free searches given</span>
+                        <span id="freeSearchesGiven">0</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Service mode</span>
+                        <span id="serviceMode">Own AI ($30/search)</span>
                     </div>
                     <div class="breakdown-item">
                         <span>Annual revenue</span>
-                        <span id="doctorRevenue">$0</span>
+                        <span id="providerRevenue">$0</span>
+                    </div>
+                </div>
+
+                <div class="breakdown-card" style="background: #e3f2fd; border-left-color: #2196f3;">
+                    <h4>📊 Provider Confidence Ramp</h4>
+                    <div class="breakdown-item">
+                        <span>Month 1-2 usage rate</span>
+                        <span id="earlyUsage">0%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Month 3+ usage rate</span>
+                        <span id="fullUsage">100%</span>
+                    </div>
+                    <div class="breakdown-item">
+                        <span>Average usage Year 1</span>
+                        <span id="avgUsage">0%</span>
                     </div>
                 </div>
 
@@ -537,10 +609,18 @@
             otherCosts: document.getElementById('otherCosts'),
             searchesPerYear: document.getElementById('searchesPerYear'),
             retentionRate: document.getElementById('retentionRate'),
-            numDoctors: document.getElementById('numDoctors'),
-            patientsPerDoctor: document.getElementById('patientsPerDoctor'),
-            shortageRate: document.getElementById('shortageRate'),
-            doctorReferralRate: document.getElementById('doctorReferralRate'),
+            // Provider model inputs
+            providersInPipeline: document.getElementById('providersInPipeline'),
+            providerConversionRate: document.getElementById('providerConversionRate'),
+            patientsPerProvider: document.getElementById('patientsPerProvider'),
+            patientsNeedingSearch: document.getElementById('patientsNeedingSearch'),
+            freeSearches: document.getElementById('freeSearches'),
+            rampUpMonths: document.getElementById('rampUpMonths'),
+            referralsPerProvider: document.getElementById('referralsPerProvider'),
+            useWhiteLabel: document.getElementById('useWhiteLabel'),
+            fullServicePrice: document.getElementById('fullServicePrice'),
+            whiteLabelMarkup: document.getElementById('whiteLabelMarkup'),
+            // Other channels
             numInfluencers: document.getElementById('numInfluencers'),
             followersPerInfluencer: document.getElementById('followersPerInfluencer'),
             postsPerMonth: document.getElementById('postsPerMonth'),

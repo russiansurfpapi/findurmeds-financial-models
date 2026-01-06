@@ -9,3 +9,17 @@ build/
 .vercel
 .idea/
 .vscode/
+
+# Scripts and utilities (not part of web app)
+scripts/
+marketing/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Directories that don't belong in webapp
+accountability-tracker/
+career_tracker/
+sample_meds/
